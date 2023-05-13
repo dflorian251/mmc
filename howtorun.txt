@@ -1,0 +1,3 @@
+>gcc mmc.c -o mmc -lm
+
+>./mmc

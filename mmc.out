@@ -1,0 +1,19 @@
+C-server queueing system
+
+Mean interarrival time      0.556  minutes
+
+Mean service time           0.500  minutes
+
+Number of customers       1000000
+
+Number of servers             2
+
+
+
+Average delay in queue  0.0448997 minutes
+
+Average number in queue 0.0808024
+
+Server utilization      0.2091111
+
+Time simulation ended  555673.000
