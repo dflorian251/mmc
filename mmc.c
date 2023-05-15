@@ -62,7 +62,7 @@ int main(void)
 
 		/*  Update time_average statistical accumulators.  */
 		update_time_avg_stats( );
-
+        printf("%d\n",next_event_type );
         if(next_event_type == 1){
             arrive();
         }else{
@@ -208,10 +208,10 @@ void  depart(void)
 		/*  The queue is empty, so make the server idle and eliminate the
                            departure (service comletion)  event from consideration.  */
 
-        for(int i=0;i<C;i++){
-            server_status[i] = IDLE;
-            time_next_event[i + 2]  =  1.0e+30;
-        }
+
+        server_status[next_event_type - 2] = IDLE;
+        time_next_event[next_event_type]  =  1.0e+30;
+
 		// server_status     = IDLE;
 		// time_next_event[2]  =  1.0e+30;
 	}
@@ -232,7 +232,7 @@ void  depart(void)
 		/* Increment the number of customers delayed, and schedule departure.*/
 
 		++num_custs_delayed;
-		time_next_event[pick_a_server(BUSY)+2] = time + expon(mean_service);
+		time_next_event[next_event_type] = time + expon(mean_service);
 
 		/*  Move each customer in queue (if any) up one place.  */
 
@@ -270,9 +270,9 @@ void  update_time_avg_stats(void)
 	area_num_in_q  += num_in_q * time_since_last_event;
 
 	/*  Update area under server-busy indicator function.  */
-
-    area_server_status += server_status[server_used] * time_since_last_event;
-
+    for(int i=0;i<C;i++){
+        area_server_status += server_status[i] * time_since_last_event;
+    }
 }
 
 /*  Exponential variate generation function.  */
