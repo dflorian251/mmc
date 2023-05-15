@@ -9,6 +9,10 @@
 #define IDLE 0			/*  and idle.  */
 #define C 2             // the number of servers
 
+
+//we are dealing with C servers, so the "server_status" must be an array of length C
+//also the array "time_next_event" must be adjusted for the M/M/C simulation
+//we need the variable "server_used" for the server that will handle the event
 int       next_event_type, num_custs_delayed, num_delays_required,
             num_events, num_in_q, server_status[C], server_used;
 float    area_num_in_q, area_server_status, mean_interarrival,
@@ -16,6 +20,11 @@ float    area_num_in_q, area_server_status, mean_interarrival,
             time_last_event, time_next_event[C+2], total_of_delays;
 FILE   *infile, *outfile;
 
+
+/* two new functions
+- "check_c_servers(void)" checks the total status of our system
+- "pick_a_server(int status)" picks a server that has the corresponding value in the parameter "status"
+*/
 void   initialize(void);
 void   timing(void);
 void   arrive(void);
@@ -38,6 +47,7 @@ int main(void)
 	num_events = C + 1;
 
 	/*  Read input parameters.  */
+	// we had a truble here with this fscanf 
 	// fscanf(infile, "%f  %f  %d",  &mean_interarrival,  &mean_service,
 	// 	&num_delays_required);
     mean_interarrival = 0.5555555556;
@@ -62,7 +72,7 @@ int main(void)
 
 		/*  Update time_average statistical accumulators.  */
 		update_time_avg_stats( );
-        printf("%d\n",next_event_type );
+	
         if(next_event_type == 1){
             arrive();
         }else{
